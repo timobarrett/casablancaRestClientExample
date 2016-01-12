@@ -42,7 +42,7 @@ int main(int argc, char *args[])
    const string_t OPEN_WEATHER_URL = "api.openweathermap.org";
    const string_t OPEN_WEATHER_PATH_FRCAST = "/data/2.5/weather";
    string_t zipCode = args[1];
-   string_t OPEN_WEATHER_ID = "0da6960ae510202d1f8633e08e075162";
+   string_t OPEN_WEATHER_ID = "get one from openeatherapi.com";
    string_t MODE = "&mode";
    string_t MODE_VALUE = "json";
    const string_t UNIT = "&units";
