@@ -25,12 +25,13 @@ void display_results(json::value const & value){
 //			  std::cout<<title.as_string() << std::endl << url.as_string() << std::endl;
 //		  }
 		std::cout<<value<<std::endl;
-	}
+	}std::cout<<"STATUS = " <<response.status_code()<<std::endl;
 }
 
 int main(int argc, char *args[])
 {
     if(argc != 2)
+
     {
         printf("Usage: Casablanca.exe zip code \n");
         return -1;
