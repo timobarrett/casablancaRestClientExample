@@ -15,44 +15,29 @@ using namespace concurrency::streams;
  * this piss poor example sends rest request to openweatherapi and write results to file specified
  * by the second input parameter
  */
-void display_results(json::value value){
+void displayAllResults(json::value value){
 
 	if (!value.is_null()){
-		std::cout<<value<<std::endl;
-		if (value.is_object()){
+		if (value.is_object())
+		{
 			web::json::object foo = value.as_object();
-			std::cout<<"OBJECT"<<std::endl;
-			for (auto iter = foo.cbegin(); iter != foo.cend();++iter){
-				const string_t &key = iter->first;
-				const json::value &val = iter->second;
-				std::cout<<"KEY = "<<key<<std::endl;
+			for (auto p1 : value.as_object()){
+				const json::value val = p1.second;
+				std::cout<<"KEY = "<<p1.first;
 					if (!val.is_null() && val.is_string()){
 						std::cout<<"VAL = " <<val.as_string()<<std::endl;
 					}
-					display_results(val);
+					displayAllResults(val);
 			}
 		}
 		else if (value.is_array()){
-			web::json::array foo = value.as_array();
-			std::cout<<"ARRAY"<<std::endl;
-			for (auto iter = foo.cbegin(); iter != foo.cend();++iter){
-//				string_t tPants = foo.iter);
-//					if (!tPants.empty()){
-//						std::cout<<"VAL = " <<tPants<<std::endl;
-//					}
-			}
-
-
+            for(auto ptr: value.as_array())
+            {
+            	for (auto p2: ptr.as_object()){
+            		std::cout<<"KEY = " <<p2.first<< " VALUE = "<<p2.second<<std::endl;
+            	}
+            }
 		}
-//
-//			if (val.is_object() || val.is_array()){
-//				std::cout<<"KEY = "<<key<<std::endl;
-//				if (!val.is_null() && val.is_string()){
-//					std::cout<<"VAL = " <<val.as_string()<<std::endl;
-//				}
-	//			display_results(val);
-		//	}
-		//}
 	}
 }
 
@@ -73,7 +58,7 @@ int main(int argc, char *args[])
    const string_t OPEN_WEATHER_URL = "api.openweathermap.org";
    const string_t OPEN_WEATHER_PATH_FRCAST = "/data/2.5/weather";
    string_t zipCode = args[1];
-   string_t OPEN_WEATHER_ID = "0da6960ae510202d1f8633e08e075162";
+   string_t OPEN_WEATHER_ID = "get one from openweatherapi.org";
    string_t MODE = "&mode";
    string_t MODE_VALUE = "json";
    const string_t UNIT = "&units";
@@ -108,9 +93,9 @@ int main(int argc, char *args[])
 		    })
 		    .then([](pplx::task<json::value> previousTask){
 				try{
-					json::value const & v = previousTask.get();
+					json::value v = previousTask.get();
 					std::cout<<"STARTING JSON" << v << std::endl;
-					display_results(v);
+					displayAllResults(v);
 				}
 				catch (http_exception const & e){
 					std::cout <<e.what() << std::endl;
