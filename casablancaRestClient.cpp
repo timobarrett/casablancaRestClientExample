@@ -1,7 +1,6 @@
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 #include <cpprest/json.h>
-=======
 #include <sstream>
 #include <string>
 
@@ -37,21 +36,32 @@ void display_results(json::value value){
 			web::json::array foo = value.as_array();
 			std::cout<<"ARRAY"<<std::endl;
 			for (auto iter = foo.cbegin(); iter != foo.cend();++iter){
-				string_t shitPants = iter->as_string();
-					if (!shitPants.empty()){
-						std::cout<<"VAL = " <<shitPants<<std::endl;
-					}
+//				string_t tPants = foo.iter);
+//					if (!tPants.empty()){
+//						std::cout<<"VAL = " <<tPants<<std::endl;
+//					}
 			}
 
 
 		}
+//
+//			if (val.is_object() || val.is_array()){
+//				std::cout<<"KEY = "<<key<<std::endl;
+//				if (!val.is_null() && val.is_string()){
+//					std::cout<<"VAL = " <<val.as_string()<<std::endl;
+//				}
+	//			display_results(val);
+		//	}
+		//}
 	}
 }
+
 
 
 int main(int argc, char *args[])
 {
     if(argc != 2)
+
     {
         printf("Usage: Casablanca.exe zip code \n");
         return -1;
@@ -63,7 +73,7 @@ int main(int argc, char *args[])
    const string_t OPEN_WEATHER_URL = "api.openweathermap.org";
    const string_t OPEN_WEATHER_PATH_FRCAST = "/data/2.5/weather";
    string_t zipCode = args[1];
-   string_t OPEN_WEATHER_ID = "get one from openeatherapi.com";
+   string_t OPEN_WEATHER_ID = "0da6960ae510202d1f8633e08e075162";
    string_t MODE = "&mode";
    string_t MODE_VALUE = "json";
    const string_t UNIT = "&units";
