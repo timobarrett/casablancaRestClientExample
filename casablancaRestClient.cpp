@@ -1,5 +1,6 @@
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
+#include <cpprest/json.h>
 #include <sstream>
 #include <string>
 
@@ -8,25 +9,54 @@ using namespace utility;
 using namespace web;
 using namespace web::http;
 using namespace web::http::client;
+using namespace web::json;
 using namespace concurrency::streams;
 /**
  * this piss poor example sends rest request to openweatherapi and write results to file specified
  * by the second input parameter
  */
-void display_results(json::value const & value){
+void display_results(json::value value){
+
 	if (!value.is_null()){
-//		  auto response = value[U"responseData"];
-//		  auto results = response[L"results"];
-//
-//		  for (auto const & p : results){
-//			  auto o = p.second;
-//			  auto url = o[L"url"];
-//			  auto title = o[L"titleNoFormatting"];
-//			  std::cout<<title.as_string() << std::endl << url.as_string() << std::endl;
-//		  }
 		std::cout<<value<<std::endl;
-	}std::cout<<"STATUS = " <<response.status_code()<<std::endl;
+		if (value.is_object()){
+			web::json::object foo = value.as_object();
+			std::cout<<"OBJECT"<<std::endl;
+			for (auto iter = foo.cbegin(); iter != foo.cend();++iter){
+				const string_t &key = iter->first;
+				const json::value &val = iter->second;
+				std::cout<<"KEY = "<<key<<std::endl;
+					if (!val.is_null() && val.is_string()){
+						std::cout<<"VAL = " <<val.as_string()<<std::endl;
+					}
+					display_results(val);
+			}
+		}
+		else if (value.is_array()){
+			web::json::array foo = value.as_array();
+			std::cout<<"ARRAY"<<std::endl;
+			for (auto iter = foo.cbegin(); iter != foo.cend();++iter){
+				string_t shitPants = iter->as_string();
+					if (!shitPants.empty()){
+						std::cout<<"VAL = " <<shitPants<<std::endl;
+					}
+			}
+
+
+		}
+//
+//			if (val.is_object() || val.is_array()){
+//				std::cout<<"KEY = "<<key<<std::endl;
+//				if (!val.is_null() && val.is_string()){
+//					std::cout<<"VAL = " <<val.as_string()<<std::endl;
+//				}
+	//			display_results(val);
+		//	}
+		//}
+	}
 }
+
+
 
 int main(int argc, char *args[])
 {
@@ -79,6 +109,7 @@ int main(int argc, char *args[])
 		    .then([](pplx::task<json::value> previousTask){
 				try{
 					json::value const & v = previousTask.get();
+					std::cout<<"STARTING JSON" << v << std::endl;
 					display_results(v);
 				}
 				catch (http_exception const & e){
