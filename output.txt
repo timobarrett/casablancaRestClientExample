@@ -1,0 +1,44 @@
+QUERY=/?appid=0da6960ae510202d1f8633e08e075162&zip=03031&mode=json&units=imperial
+STATUS = 200
+STARTING JSON{"base":"cmc stations","clouds":{"all":40},"cod":200,"coord":{"lat":42.840000000000003,"lon":-71.650000000000006},"dt":1452796650,"id":5089578,"main":{"humidity":46,"pressure":1009,"temp":25.899999999999999,"temp_max":28.399999999999999,"temp_min":21.199999999999999},"name":"Milford","sys":{"country":"US","id":1951,"message":0.0051999999999999998,"sunrise":1452773694,"sunset":1452807423,"type":1},"weather":[{"description":"scattered clouds","icon":"03d","id":802,"main":"Clouds"}],"wind":{"deg":280,"speed":5.6200000000000001}}
+KEY = base Value = "cmc stations"
+KEY = clouds Value = {"all":40}
+KEY = all Value = 40
+KEY = cod Value = 200
+KEY = coord Value = {"lat":42.840000000000003,"lon":-71.650000000000006}
+KEY = lat Value = 42.840000000000003
+KEY = lon Value = -71.650000000000006
+KEY = dt Value = 1452796650
+KEY = id Value = 5089578
+KEY = main Value = {"humidity":46,"pressure":1009,"temp":25.899999999999999,"temp_max":28.399999999999999,"temp_min":21.199999999999999}
+KEY = humidity Value = 46
+KEY = pressure Value = 1009
+KEY = temp Value = 25.899999999999999
+KEY = temp_max Value = 28.399999999999999
+KEY = temp_min Value = 21.199999999999999
+KEY = name Value = "Milford"
+KEY = sys Value = {"country":"US","id":1951,"message":0.0051999999999999998,"sunrise":1452773694,"sunset":1452807423,"type":1}
+KEY = country Value = "US"
+KEY = id Value = 1951
+KEY = message Value = 0.0051999999999999998
+KEY = sunrise Value = 1452773694
+KEY = sunset Value = 1452807423
+KEY = type Value = 1
+KEY = weather Value = [{"description":"scattered clouds","icon":"03d","id":802,"main":"Clouds"}]
+KEY = description VALUE = "scattered clouds"
+KEY = icon VALUE = "03d"
+KEY = id VALUE = 802
+KEY = main VALUE = "Clouds"
+KEY = wind Value = {"deg":280,"speed":5.6200000000000001}
+KEY = deg Value = 280
+KEY = speed Value = 5.6200000000000001
+
+location = "Milford"
+temperature as presented from the server --> 25.899999999999999
+temperature = 25.9
+humidity = 46
+pressure = 1009
+weather ARRAY VALUES 
+description = "scattered clouds"
+icon = "03d"
+main = "Clouds"
