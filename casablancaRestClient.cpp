@@ -1,7 +1,7 @@
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 #include <cpprest/json.h>
-#include <sstream>
+
 #include <string>
 
 
@@ -12,7 +12,7 @@ using namespace web::http::client;
 using namespace web::json;
 using namespace concurrency::streams;
 /**
- * this piss poor example sends rest request to openweatherapi and write results to file specified
+ * sends rest request to openweathermap and write results to file specified
  * by the second input parameter
  */
 void displayAllResults(json::value value){
@@ -31,20 +31,41 @@ void displayAllResults(json::value value){
             for(auto ptr: value.as_array())
             {
             	for (auto p2: ptr.as_object()){
-            		std::cout<<std::endl<<"KEY = " <<p2.first<< " VALUE = "<<p2.second;
+            		std::cout<<"KEY = " <<p2.first<< " VALUE = "<<p2.second<<std::endl;
             	}
             }
 		}
 	}
 }
-
+/**
+ * process the json values returned getting selected values
+ * demonstrates getting values, numeric values and array values
+ *
+ */
 void getSpecificInfo(json::value value){
+	if (!value.is_null())
+	    {
 
-	if (!value.is_null()){
-	//	json::value  jsonObj = json::value::parse(value.as_string());
+			std::cout<<std::endl<<"location = "<< value.at("name")<<std::endl;
+			//below reads in a number value and does rounding on the value
+			std::cout<<"temperature as presented from the server --> "<<value.at("main").at("temp")<<std::endl;
+			std::cout<<"temperature = " << value.at("main").at("temp").as_number().to_double()<<std::endl;
+			std::cout<<"humidity = " << value.at("main").at("humidity")<<std::endl;
+			std::cout<<"pressure = "<<value.at("main").at("pressure")<<std::endl;
+
+			//get the values contained in the array
+			json::object foo2 = value.as_object();
+			auto ptr = foo2.find("weather");
+			json::array doo = ptr->second.as_array();
+			std::cout<<ptr->first<<" ARRAY VALUES "<<std::endl;
+			auto iter = doo.cbegin();
+			std::cout<<"description = "<<iter->at("description")<<std::endl;
+			std::cout<<"icon = "<<iter->at("icon")<<std::endl;
+			std::cout<<"main = "<<iter->at("main")<<std::endl;
+
+	    }
+
 	}
-}
-
 
 
 int main(int argc, char *args[])
@@ -62,11 +83,12 @@ int main(int argc, char *args[])
    const string_t OPEN_WEATHER_URL = "api.openweathermap.org";
    const string_t OPEN_WEATHER_PATH_FRCAST = "/data/2.5/weather";
    string_t zipCode = args[1];
-   string_t OPEN_WEATHER_ID = "get one from openweatherapi.org";
+   string_t OPEN_WEATHER_ID = "get one from openweathermap.org";
    string_t MODE = "&mode";
    string_t MODE_VALUE = "json";
    const string_t UNIT = "&units";
    string_t UNIT_VALUE = "imperial";
+   string_t foo;
 
 
 //GOAL - http://api.openweathermap.org/data/2.5/weather?appid=0da6960ae510202d1f8633e08e075162&zip=03031&mode=json&units=imperial
@@ -90,7 +112,7 @@ int main(int argc, char *args[])
 		    {
         		if (response.status_code() == status_codes::OK){
         			std::cout<<"STATUS = " <<response.status_code()<<std::endl;
-        			return response.extract_json();
+					return response.extract_json();
         		}
         		std::cout<<"STATUS = " <<response.status_code()<<std::endl;
         		return pplx::task_from_result(json::value());
@@ -100,6 +122,7 @@ int main(int argc, char *args[])
 					json::value v = previousTask.get();
 					std::cout<<"STARTING JSON" << v << std::endl;
 					displayAllResults(v);
+
 					getSpecificInfo(v);
 				}
 				catch (http_exception const & e){
